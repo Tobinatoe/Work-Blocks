@@ -150,4 +150,20 @@ final class TimerStore: ObservableObject {
         todayMinutes = t.minutes
         weekBlocks = storage.weekBlocks()
     }
+    
+        /// Adds a completed block for today, without running the timer.
+        func addWorkBlockNow(tag: String? = nil) {
+            let now = Date()
+            let blockLenSec = Config.blockLengthMinutes * 60
+            let start = now
+            let end = now.addingTimeInterval(TimeInterval(blockLenSec))
+            storage.insertBlock(.init(startedAt: start, endedAt: end, durationSec: blockLenSec, status: .completed, tag: tag))
+            refreshStats()
+        }
+    
+        /// Removes the most recent completed block for today.
+        func removeWorkBlockNow() {
+            storage.removeLatestBlockToday()
+            refreshStats()
+        }
 }

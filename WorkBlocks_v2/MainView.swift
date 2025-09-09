@@ -58,6 +58,16 @@ struct MainView: View {
                 }
                 .buttonStyle(.bordered)
 
+                    Button(action: { timer.addWorkBlockNow() }) {
+                        Label("Add WorkBlock", systemImage: "bolt.fill")
+                    }
+                    .buttonStyle(.borderedProminent)
+
+                        Button(action: { timer.removeWorkBlockNow() }) {
+                            Label("Remove WorkBlock", systemImage: "minus.circle.fill")
+                        }
+                        .buttonStyle(.bordered)
+
                 // Button(action: { timer.removeBlock(withTag: workDescription) }) {
                 //     Label("Remove", systemImage: "minus.circle.fill")
                 // }

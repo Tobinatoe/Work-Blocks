@@ -114,6 +114,23 @@ final class Storage: ObservableObject {
     }
 
     // Helpers
+    /// Removes the most recent completed block for today, if any.
+    func removeLatestBlockToday() {
+        let (start, end) = dayBounds(for: Date())
+        let req = NSFetchRequest<NSManagedObject>(entityName: "Block")
+        req.predicate = NSPredicate(format: "ended_at >= %@ AND ended_at < %@ AND status == %@", start as NSDate, end as NSDate, BlockStatus.completed.rawValue)
+        let sort = NSSortDescriptor(key: "ended_at", ascending: false)
+        req.sortDescriptors = [sort]
+        req.fetchLimit = 1
+        do {
+            if let latest = try ctx.fetch(req).first {
+                ctx.delete(latest)
+                save()
+            }
+        } catch {
+            print("Error removing latest block:", error)
+        }
+    }
     func dayBounds(for date: Date) -> (Date, Date) {
         let cal = Calendar.current
         let start = cal.startOfDay(for: date)

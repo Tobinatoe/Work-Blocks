@@ -23,6 +23,14 @@ struct MenuBarView: View {
                 timer.addCompletedBlock(withTag: nil)
             }
             .disabled(timer.state != .completed)
+
+                Button("Add WorkBlock") {
+                    timer.addWorkBlockNow()
+                }
+
+                    Button("Remove WorkBlock") {
+                        timer.removeWorkBlockNow()
+                    }
         }
         .padding(12)
         .frame(width: 280)
