@@ -1,11 +1,14 @@
 import SwiftUI
 
 struct MainView: View {
+    @State private var workDescription: String = ""
+    @FocusState private var isTextFieldFocused: Bool
     @EnvironmentObject var timer: TimerStore
     @EnvironmentObject var storage: Storage
 
     var body: some View {
         VStack(spacing: 12) {
+            // ...existing code...
             // Big number = blocks today
             Text("\(timer.todayBlocks)")
                 .font(.system(size: 128, weight: .bold, design: .rounded))
@@ -50,13 +53,31 @@ struct MainView: View {
                 }
                 .buttonStyle(.bordered)
 
-                Button(action: { timer.addCompletedBlock() }) {
+                Button(action: { timer.addCompletedBlock(withTag: workDescription) }) {
                     Label("Add", systemImage: "plus.circle.fill")
                 }
                 .buttonStyle(.bordered)
-                .disabled(timer.state != .completed)
+
+                // Button(action: { timer.removeBlock(withTag: workDescription) }) {
+                //     Label("Remove", systemImage: "minus.circle.fill")
+                // }
+                // .buttonStyle(.bordered)
             }
             .padding(.top, 4)
+
+            // Work description input (below buttons, with Done button)
+            HStack {
+                TextField("What did you work on?", text: $workDescription)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .frame(minWidth: 200)
+                    .disableAutocorrection(true)
+                    .focused($isTextFieldFocused)
+                Button("Done") {
+                    isTextFieldFocused = false
+                }
+                .buttonStyle(.bordered)
+            }
+            .padding(.vertical, 6)
         }
         .padding(24)
         .frame(minWidth: 440, minHeight: 420)

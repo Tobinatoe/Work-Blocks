@@ -96,11 +96,11 @@ final class TimerStore: ObservableObject {
         state = .idle
     }
 
-    func addCompletedBlock() {
+    func addCompletedBlock(withTag tag: String?) {
         guard state == .completed else { return }
         guard let start = startedAt else { return }
         let end = start.addingTimeInterval(TimeInterval(blockLenSec))
-        storage.insertBlock(.init(startedAt: start, endedAt: end, durationSec: blockLenSec, status: .completed, tag: nil))
+        storage.insertBlock(.init(startedAt: start, endedAt: end, durationSec: blockLenSec, status: .completed, tag: tag))
         storage.setSession(startedAt: nil)
         startedAt = nil
         pausedAccumSec = 0

@@ -20,7 +20,7 @@ struct MenuBarView: View {
             }
 
             Button("Add Completed Block") {
-                timer.addCompletedBlock()
+                timer.addCompletedBlock(withTag: nil)
             }
             .disabled(timer.state != .completed)
         }
